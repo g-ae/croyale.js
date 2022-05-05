@@ -1,0 +1,1 @@
+export {ClashRoyale} from './ClashRoyale'

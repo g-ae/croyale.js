@@ -1,0 +1,29 @@
+{
+  "name": "croyale.js",
+  "version": "1.0.1",
+  "description": "Clash Royale API Wrapper",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gonesteves/croyale.js.git"
+  },
+  "author": "gonesteves",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gonesteves/croyale.js/issues"
+  },
+  "homepage": "https://github.com/gonesteves/croyale.js#readme",
+  "devDependencies": {
+    "typescript": "^4.6.4"
+  },
+  "dependencies": {
+    "axios": "^0.27.2"
+  }
+}
