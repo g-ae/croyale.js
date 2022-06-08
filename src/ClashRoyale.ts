@@ -1,4 +1,5 @@
-import {Player} from "./class/Player";
+import { Clan } from "./class/Clan";
+import { Player } from "./class/Player";
 
 /**
  * @class ClashRoyale
@@ -6,12 +7,34 @@ import {Player} from "./class/Player";
  * @author gonesteves
  */
 export class ClashRoyale {
+    // singleton
+    static instance: ClashRoyale;
+
+    // constantes
     static readonly url = "https://api.clashroyale.com/v1";
-    readonly apiKey: string;
-    constructor(apiKey: string) {
+    static headers: any;
+
+    // variables
+    private apiKey: string;
+
+    private constructor(apiKey: string) {
         this.apiKey = apiKey;
     }
-    public getPlayer(playerTag: string): Player {
-        return new Player(playerTag, this.apiKey);
+    static login(apiKey: string) {
+        this.instance = new ClashRoyale(apiKey);
+        this.headers = {
+            'Authorization': `Bearer ${ClashRoyale.getApiKey()}`
+        }
+    }
+    static getApiKey(): string {
+        return this.instance.apiKey;
+    }
+
+    static async getPlayer(playerTag: string): Promise<Player> {
+        return new Player(playerTag);
+    }
+
+    static getClan(clanTag: string): Clan {
+        return new Clan(clanTag);
     }
 }

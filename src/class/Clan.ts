@@ -21,20 +21,20 @@ export class Clan {
     public members: number;
     public memberList: ClanMember[];
 
-    constructor(tag: string, apiKey: string) {
+    constructor(tag: string) {
         if (tag.startsWith("#")) {
             this.tag = tag;
         } else {
             this.tag = "#" + tag;
         }
         this.tag = tag;
-        this.apiGetClan(apiKey);
+        this.apiGetClan();
     }
 
-    private async apiGetClan(apiKey: string) {
+    private async apiGetClan() {
         await axios.get((ClashRoyale.url + "/clans/" + this.tag).replace('#', "%23"), {
             headers: {
-                "Authorization": `Bearer ${apiKey}`
+                "Authorization": `Bearer ${ClashRoyale.instance}`
             }
         }).then(response => {
             const data = response.data;

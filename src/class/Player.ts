@@ -7,8 +7,8 @@ import {LeagueStatistics} from "./LeagueStatistics";
 export class Player {
     public name: string;
     public tag: string;
-    public clan: Clan;
-    public arena: Arena;
+    public clan: any;
+    public arena: any;
 
     public level: number;
     public exp: number;
@@ -26,30 +26,35 @@ export class Player {
     public currentSeason: LeagueStatistics;
     public previousSeason: LeagueStatistics;
 
-    constructor(tag: string, apiKey: string) {
+    constructor(tag: string) {
         // always have the "#" before the tag
         if (tag.startsWith("#")) {
             this.tag = tag;
         } else {
             this.tag = "#" + tag;
         }
-        this.apiGetPlayer(apiKey);
+        this.apiGetPlayer().then(player => {
+            return player;
+        }).catch(e => {
+            console.log(e)
+            return null;
+        });
     }
 
     /**
      * Get the player's info
-     * @param apiKey Clash Royale's API key
      */
-    private async apiGetPlayer(apiKey: string): Promise<void> {
+    private async apiGetPlayer(): Promise<Player> {
         await axios.get((ClashRoyale.url + "/players/" + this.tag).replace('#', '%23'), {
-            headers: {
-                'Authorization': `Bearer ${apiKey}`
-            }
+            headers: ClashRoyale.headers
         }).then(response => {
             const data = response.data;
             this.name = data.name;
-            this.clan = new Clan(data.clan.tag, apiKey);
-            this.arena = new Arena(data.arena.id, apiKey);
+            this.clan = () => {
+                return new Clan(data.clan.tag);
+            };
+            console.log(this.clan);
+            this.arena = new Arena(data.arena.id);
             this.level = data.expLevel;
             this.exp = data.expPoints;
             this.stars = data.starPoints;
@@ -63,8 +68,9 @@ export class Player {
             this.bestSeason = new LeagueStatistics(data.bestSeason);
             this.currentSeason = new LeagueStatistics(data.currentSeason);
             this.previousSeason = new LeagueStatistics(data.previousSeason);
-        }).catch(error => {
-            console.log(error);
-        });
+
+            return this;
+        }).catch(error => console.log(error));
+        return null;
     }
 }
