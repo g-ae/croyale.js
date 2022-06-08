@@ -28,20 +28,19 @@ export class Clan {
             this.tag = "#" + tag;
         }
         this.tag = tag;
-        this.apiGetClan();
     }
 
-    private async apiGetClan() {
-        await axios.get((ClashRoyale.url + "/clans/" + this.tag).replace('#', "%23"), {
-            headers: {
-                "Authorization": `Bearer ${ClashRoyale.instance}`
-            }
-        }).then(response => {
+    public async build(): Promise<Clan> {
+        try {
+            const response = await axios.get((ClashRoyale.url + "/clans/" + this.tag).replace('#', "%23"), ClashRoyale.headers)
+            
             const data = response.data;
             this.name = data.name;
             this.badgeId = data.badgeId;
-        }).catch(error => {
-            console.log(error);
-        });
+            return this;
+        } catch(err) {
+            console.log(err);
+            return this;
+        }
     }
 }

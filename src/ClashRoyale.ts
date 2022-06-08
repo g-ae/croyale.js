@@ -31,10 +31,10 @@ export class ClashRoyale {
     }
 
     static async getPlayer(playerTag: string): Promise<Player> {
-        return new Player(playerTag);
+        return await new Player(playerTag).build();
     }
 
-    static getClan(clanTag: string): Clan {
-        return new Clan(clanTag);
+    static async getClan(clanTag: string): Promise<Clan> {
+        return await new Clan(clanTag).build();
     }
 }
