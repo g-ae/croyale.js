@@ -7,7 +7,7 @@ import {LeagueStatistics} from "./LeagueStatistics";
 export class Player {
     public name: string;
     public tag: string;
-    public clan: () => Clan;
+    public clan: Function;
     public arena: Arena;
 
     public level: number;
